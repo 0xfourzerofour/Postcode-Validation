@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import axios from 'axios';
-import { api } from '../../Utils/constants';
+import { fetchAxios } from '../../Utils/Fetch';
 
 const FormFields = styled.div`
   display: flex;
@@ -28,10 +27,11 @@ export default function FormDetail() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
-    axios.get(api).then((res) => {
-      console.log(res);
-    });
+    fetchAxios('https://digitalapi.auspost.com.au/postcode/search').then(
+      (res) => {
+        console.log(res);
+      }
+    );
   };
 
   return (
