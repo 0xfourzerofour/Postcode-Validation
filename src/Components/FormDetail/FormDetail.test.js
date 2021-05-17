@@ -2,13 +2,7 @@
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import {
-  render,
-  screen,
-  fireEvent,
-  getByLabelText,
-} from '@testing-library/react';
-import selectEvent from 'react-select-event';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import FormDetail from './index';
 
@@ -29,6 +23,94 @@ test('Button Disabled without input', async () => {
 
   await fireEvent.change(screen.getByTestId('select'), {
     target: { value: '' },
+  });
+
+  expect(screen.getByText(/Click Me/i).closest('button')).toBeDisabled();
+});
+
+test('Button Disabled with only postcode input', async () => {
+  render(<FormDetail />);
+
+  await fireEvent.change(screen.getByPlaceholderText('Post Code'), {
+    target: {
+      value: '2103',
+    },
+  });
+
+  await fireEvent.change(screen.getByPlaceholderText('Suburb'), {
+    target: {
+      value: '',
+    },
+  });
+
+  await fireEvent.change(screen.getByTestId('select'), {
+    target: { value: '' },
+  });
+
+  expect(screen.getByText(/Click Me/i).closest('button')).toBeDisabled();
+});
+
+test('Button Disabled with only suburb input', async () => {
+  render(<FormDetail />);
+
+  await fireEvent.change(screen.getByPlaceholderText('Post Code'), {
+    target: {
+      value: '',
+    },
+  });
+
+  await fireEvent.change(screen.getByPlaceholderText('Suburb'), {
+    target: {
+      value: 'Mona Vale',
+    },
+  });
+
+  await fireEvent.change(screen.getByTestId('select'), {
+    target: { value: '' },
+  });
+
+  expect(screen.getByText(/Click Me/i).closest('button')).toBeDisabled();
+});
+
+test('Button Disabled with only state input', async () => {
+  render(<FormDetail />);
+
+  await fireEvent.change(screen.getByPlaceholderText('Post Code'), {
+    target: {
+      value: '',
+    },
+  });
+
+  await fireEvent.change(screen.getByPlaceholderText('Suburb'), {
+    target: {
+      value: '',
+    },
+  });
+
+  await fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'NSW' },
+  });
+
+  expect(screen.getByText(/Click Me/i).closest('button')).toBeDisabled();
+});
+
+test('Button Disabled with postcode of less than 4 digits', async () => {
+  render(<FormDetail />);
+
+  await fireEvent.change(screen.getByPlaceholderText('Post Code'), {
+    target: {
+      value: '210',
+    },
+  });
+
+  await fireEvent.change(screen.getByPlaceholderText('Suburb'), {
+    target: {
+      value: 'Mona Vale',
+    },
+  });
+
+  await fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'NSW' },
   });
 
   expect(screen.getByText(/Click Me/i).closest('button')).toBeDisabled();
