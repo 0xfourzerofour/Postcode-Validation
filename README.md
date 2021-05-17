@@ -1,12 +1,18 @@
 # Postcode validator
 
-### Run Application
+### Before Running Application Locally
 
-lIVE DEMO - http://ec2-3-15-187-75.us-east-2.compute.amazonaws.com/
+Please clone the following repository for this tech test.
 
-CORS REQUEST FORWARDING - https://github.com/joshpauline/cors-fix/ (You will need to clone this repo and run npm start if you would like to run applicaiton locally. You will just have to change the /api/location endpoint to http://localhost:5000/location)
+CORS REQUEST FORWARDING - https://github.com/joshpauline/cors-fix/
 
-### Run Application
+### NOTE
+
+The auspost API does not have CORS enabled on their server so I had to make a request to
+my own express server with CORS enabled so that I could access endpoint from the browser and 
+bypass the preflight cors error.
+
+### Run Application (SAME FOR BOTH REPOS)
 
 1.  `npm install`
 2.  `npm start`
@@ -34,33 +40,3 @@ CORS REQUEST FORWARDING - https://github.com/joshpauline/cors-fix/ (You will nee
 
 `npm test`
 
-### NOTE
-
-The auspost API does not have CORS enabled on their server so I had to make a request to
-my own an express server with CORS enabled so that I could access endpoint from the browser.
-
-
-### NGINX CONFIG - REVERSE PROXY
-
-```
-server {
-	listen 80 default_server;
-	server_name _;
-
-
-	location / {
-    		root /home/ubuntu/actions-runner/_work/Postcode-Validation/Postcode-Validation/build;
-    		try_files $uri /index.html;
-	}
-
-	location /api {
-    		proxy_pass http://localhost:5000;
- 	}
-
-```
-
-### DEPLOYMENT ENVIRONMENT 
-
-Amazon Ec2 instance with port 80 open for http requests. 
-
-all requests to /api/location are proxied over to port 5000 running on the server
