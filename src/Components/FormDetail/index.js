@@ -55,7 +55,7 @@ export default function FormDetail() {
     setMessage('');
 
     var strUrl =
-      '/api/location?' +
+      'http://localhost:5000/location?' +
       Object.keys(formData)
         .filter(function (key) {
           return formData[key];
