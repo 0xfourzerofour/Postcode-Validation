@@ -2,7 +2,9 @@
 
 ### Run Application
 
-lIVE DEMO -
+lIVE DEMO - http://ec2-3-15-187-75.us-east-2.compute.amazonaws.com/
+
+CORS REQUEST FORWARDING - https://github.com/joshpauline/cors-fix/
 
 ### Run Application
 
