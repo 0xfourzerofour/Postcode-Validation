@@ -7,6 +7,7 @@ const CardContainer = styled.div`
   padding: 10px;
   box-shadow: 0 10px 6px -6px rgba(0, 0, 0, 0.15);
   background-color: #f5f5f5;
+  margin: 10px;
 
   @media only screen and (max-width: 600px) {
     width: 80%;

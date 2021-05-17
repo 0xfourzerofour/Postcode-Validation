@@ -23,6 +23,14 @@ const FormFields = styled.div`
   }
 `;
 
+const Button = styled.button`
+  background: ${(props) => (props.ready ? '#0175be' : 'grey')};
+  color: white;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+`;
+
 export default function FormDetail() {
   const [formData, setFormData] = useState({
     postCode: '',
@@ -41,8 +49,10 @@ export default function FormDetail() {
 
   //passing request through to an express server to bypass cors
   //preflight error
+
   const onSubmit = (event) => {
     event.preventDefault();
+    setMessage('');
 
     var strUrl =
       'http://localhost:5000/location?' +
@@ -70,29 +80,49 @@ export default function FormDetail() {
   };
 
   //validates the response based on infomaton returned from api
-  const validate = (response) => {
-    if (response.data.localities === '') {
+  //this validation is a bit messy as the api returns an array or an object
+  //based on the input so you need to check for both
+
+  const validate = (res) => {
+    if (res.data.name === 'Error') {
+      setMessage(`postcode ${formData.postCode} does not exist`);
+    } else if (res.data.localities === '') {
       setMessage(
-        `Suburb ${formData.suburb} does not exist in ${formData.state}`
+        `Suburb ${formData.suburb} with the postcode ${formData.postCode} does not exist in ${formData.state}`
       );
-    } else if (
-      response.data.localities.locality.location ===
-      formData.suburb.toUpperCase()
-    ) {
-      setMessage('Suburb Matches postcode');
-    } else if (
-      response.data.localities.locality.location !==
-      formData.suburb.toUpperCase()
-    ) {
-      setMessage(
-        `Suburb ${formData.suburb} does not Match postcode ${formData.postCode}`
-      );
+    } else if (res.data.localities.locality[0] !== undefined) {
+      const filterArray = res.data.localities.locality.filter((element) => {
+        return element.location === formData.suburb.toLocaleUpperCase();
+      });
+
+      if (filterArray.length !== 0) {
+        setMessage(
+          `Suburb ${formData.suburb} with the postcode ${formData.postCode} is a valid address in ${formData.state}`
+        );
+      } else {
+        setMessage(
+          `${formData.postCode} is a valid postcode in ${formData.state}, however the suburb name does not match ${formData.suburb}`
+        );
+      }
+    } else {
+      if (
+        res.data.localities.locality.location ===
+        formData.suburb.toLocaleUpperCase()
+      ) {
+        setMessage(
+          `Suburb ${formData.suburb} with the postcode ${formData.postCode} is a valid address in ${formData.state}`
+        );
+      } else {
+        setMessage(
+          `${formData.postCode} is a valid postcode in ${formData.state}, however the suburb name does not match ${formData.suburb}`
+        );
+      }
     }
   };
 
   const formComplete = () => {
     if (
-      formData.postCode !== '' &&
+      formData.postCode.length > 3 &&
       formData.state !== '' &&
       formData.suburb !== ''
     ) {
@@ -120,22 +150,27 @@ export default function FormDetail() {
             onChange={onChange}
             value={formData.suburb}
           />
-          <select onChange={onChange} name="state">
+          <select data-testid="select" onChange={onChange} name="state">
             <option value="" defaultValue>
               Select State
             </option>
             {states.map((state, i) => {
               return (
-                <option key={i} name="state" value={state}>
+                <option
+                  data-testid="select-option"
+                  key={i}
+                  name="state"
+                  value={state}
+                >
                   {state}
                 </option>
               );
             })}
           </select>
         </FormFields>
-        <button disabled={!formComplete()} type="submit">
+        <Button ready={formComplete()} disabled={!formComplete()} type="submit">
           Click Me
-        </button>
+        </Button>
       </form>
       <p>{message}</p>
     </div>
