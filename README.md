@@ -58,3 +58,9 @@ server {
  	}
 
 ```
+
+### DEPLOYMENT ENVIRONMENT 
+
+Amazon Ec2 instance with port 80 open for http requests. 
+
+all requests to /api/location are proxied over to port 5000 running on the server
