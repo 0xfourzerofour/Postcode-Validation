@@ -5,10 +5,6 @@
 1.  `npm install`
 2.  `npm start`
 
-### Test Application
-
-`npm test`
-
 ### Requirements
 
 ```
@@ -27,3 +23,12 @@
 "styled-components": "^5.3.0"
 
 ```
+
+### Test Application
+
+`npm test`
+
+### NOTE
+
+The auspost API does not have CORS enabled on their server so I had to make a request to
+my own an express server with CORS enabled so that I could access the data from the browser.
