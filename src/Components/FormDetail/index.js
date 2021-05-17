@@ -47,9 +47,18 @@ export default function FormDetail() {
         })
         .join('&');
 
-    axios.get(strUrl).then((res) => {
-      validate(res);
-    });
+    axios
+      .get(strUrl, {
+        headers: {
+          'AUTH-KEY': '872608e3-4530-4c6a-a369-052accb03ca8',
+        },
+      })
+      .then((res) => {
+        validate(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const validate = (response) => {
