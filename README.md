@@ -2,6 +2,10 @@
 
 ### Run Application
 
+lIVE DEMO -
+
+### Run Application
+
 1.  `npm install`
 2.  `npm start`
 
@@ -31,4 +35,4 @@
 ### NOTE
 
 The auspost API does not have CORS enabled on their server so I had to make a request to
-my own an express server with CORS enabled so that I could access the data from the browser.
+my own an express server with CORS enabled so that I could access endpoint from the browser.
