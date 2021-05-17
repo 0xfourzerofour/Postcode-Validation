@@ -38,3 +38,23 @@ CORS REQUEST FORWARDING - https://github.com/joshpauline/cors-fix/
 
 The auspost API does not have CORS enabled on their server so I had to make a request to
 my own an express server with CORS enabled so that I could access endpoint from the browser.
+
+
+### NGINX CONFIG - REVERSE PROXY
+
+```
+server {
+	listen 80 default_server;
+	server_name _;
+
+
+	location / {
+    		root /home/ubuntu/actions-runner/_work/Postcode-Validation/Postcode-Validation/build;
+    		try_files $uri /index.html;
+	}
+
+	location /api {
+    		proxy_pass http://localhost:5000;
+ 	}
+
+```
