@@ -33,6 +33,8 @@ export default function FormDetail() {
     });
   };
 
+  //passing request through to an express server to bypass cors
+  //preflight error
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -61,6 +63,7 @@ export default function FormDetail() {
       });
   };
 
+  //validates the response based on infomaton returned from api
   const validate = (response) => {
     if (response.data.localities === '') {
       setMessage(
@@ -78,6 +81,18 @@ export default function FormDetail() {
       setMessage(
         `Suburb ${formData.suburb} does not Match postcode ${formData.postCode}`
       );
+    }
+  };
+
+  const formComplete = () => {
+    if (
+      formData.postCode !== '' &&
+      formData.state !== '' &&
+      formData.suburb !== ''
+    ) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -100,16 +115,21 @@ export default function FormDetail() {
             value={formData.suburb}
           />
           <select onChange={onChange} name="state">
-            {states.map((state) => {
+            <option value="" defaultValue>
+              Select State
+            </option>
+            {states.map((state, i) => {
               return (
-                <option name="state" value={state}>
+                <option key={i} name="state" value={state}>
                   {state}
                 </option>
               );
             })}
           </select>
         </FormFields>
-        <button type="submit">Click Me</button>
+        <button disabled={!formComplete()} type="submit">
+          Click Me
+        </button>
       </form>
       <p>{message}</p>
     </div>
