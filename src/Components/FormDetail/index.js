@@ -9,11 +9,17 @@ const FormFields = styled.div`
   flex-direction: column;
 
   input {
+    background: none;
     margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #d8d8d8;
   }
 
   select {
+    background: none;
     margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #d8d8d8;
   }
 `;
 
