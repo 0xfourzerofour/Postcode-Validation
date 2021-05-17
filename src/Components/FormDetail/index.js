@@ -120,6 +120,7 @@ export default function FormDetail() {
     }
   };
 
+  //check inputs before send form
   const formComplete = () => {
     if (
       formData.postCode.length > 3 &&
@@ -142,6 +143,7 @@ export default function FormDetail() {
             name="postCode"
             onChange={onChange}
             value={formData.postCode}
+            maxLength="4"
           />
           <input
             placeholder="Suburb"
